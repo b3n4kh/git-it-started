@@ -1,8 +1,12 @@
+---
+title: git it started
+---
+
 # Git
 
 © Benjamin Akhras
 
-https://git.akhras.at/
+https://git.akhras.at/  
 https://github.com/b3n4kh/git-it-started
 
 ---
