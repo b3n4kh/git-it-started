@@ -2,7 +2,8 @@
 
 © Benjamin Akhras
 
-https://akhras.at/git/
+https://git.akhras.at/
+https://github.com/b3n4kh/git-it-started
 
 ---
 
