@@ -306,17 +306,15 @@ This avoids conflicts, and is easier and clearer to review and merge.
 
 ### Test 
 
-Code quality can be improved by testing it.
-Multiple "lines of defense"
+Code quality can be improved by testing it.  
+Multiple "lines of defense":
+
+0. Lint
+1. Test
+2. Code Review
+3. Continues Integration
 
 ----
-
-1. Lint
-2. Test
-3. Code Review
-4. Continues Integration
-
----- 
 
 <!-- .slide: data-background-image="static/test.jpg" data-background-size="contain" -->
 
