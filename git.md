@@ -18,14 +18,18 @@ https://github.com/b3n4kh/git-it-started
 * Versionsverwaltung
 * Kollaboration
 * GitOps
-Note: A the stupid content tracker
+
+> A the stupid content tracker
+
+---
+
+> Git is a fast, scalable, distributed revision control system with an unusually rich command set that provides both high-level operations and full access to internals.
 
 ----
 
 <!-- .slide: data-background-image="static/git_lc.png" data-background-size="contain" -->
 
 ---
-
 
 <!-- .slide: data-background-image="static/git1.jpg" data-background-size="contain" -->
 Note: Ziel der Folien
@@ -213,6 +217,10 @@ git commit --ammend
 ```
 Note: feature branches statt rebase, ammend nur vor push
 
+----
+
+<!-- .slide: data-background-image="static/git_history.jpg" data-background-size="contain" -->
+
 ---
 
 ### git remote
@@ -282,7 +290,33 @@ git checkout -B featureA master
 git merge --squash devel
 ```
 ↳ Kein History rewrite in devel sondern neuer Branch
+Note: Richtiges Feature abgrenzen ist schwierig
 
+----
 
+### Always Branch away from master
 
+This avoids conflicts, and is easier and clearer to review and merge.
+
+----
+
+<!-- .slide: data-background-image="static/merge.png" data-background-size="contain" -->
+
+---
+
+### Test 
+
+Code quality can be improved by testing it.
+Multiple "lines of defense"
+
+----
+
+1. Lint
+2. Test
+3. Code Review
+4. Continues Integration
+
+---- 
+
+<!-- .slide: data-background-image="static/test.jpg" data-background-size="contain" -->
 
