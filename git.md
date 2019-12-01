@@ -197,6 +197,10 @@ git checkout -b devel master
 ↳ Erstellt und wechselt in den branch "devel"  
 Note: Quell branch aus dem erstellt wird
 
+----
+
+<!-- .slide: data-background-image="static/git_lc.png" data-background-size="contain" -->
+
 ---
 
 ### recap
