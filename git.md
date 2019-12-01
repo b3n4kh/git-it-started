@@ -318,3 +318,62 @@ Multiple "lines of defense":
 
 <!-- .slide: data-background-image="static/test.jpg" data-background-size="contain" -->
 
+---
+
+### Important Concepts
+
+<div style="text-align: left;">
+<p><span style="color:red">Problem:</span>
+We never know the state</p>
+<p><span style="color:green">Solution:</span>
+Idempotentcy</p>
+</div>
+
+----
+
+<div style="text-align: left;">
+<p><span style="color:red">Problem:</span>
+Dependencies change</p>
+<p><span style="color:green">Solution:</span>
+Automate</p>
+</div>
+
+----
+
+<div style="text-align: left;">
+<p><span style="color:red">Problem:</span>
+Releases are to fast to test</p>
+<p><span style="color:green">Solution:</span>
+Automate</p>
+</div>
+
+----
+
+<!-- .slide: data-background-image="static/devops.png" data-background-size="contain" -->
+
+---
+
+### DevOps
+
+> DevOps is a philosophy, not a method, or framework, or body of knowledge
+
+----
+
+> DevOps is the philosophy of unifying Development and Operations at the culture, practice, and tool levels, to achieve accelerated and more frequent deployment of changes to Production
+
+----
+
+<!-- .slide: data-background-image="static/devops.png" data-background-size="contain" -->
+
+---
+
+|Concept|→|Tool|
+|---|---|---|
+|Code|→|Git|
+|Build|→|Gitlab-CI|
+|Test|→|CI|
+|Package|→|RPM|
+|Release|→|Foreman|
+|Configure|→|Puppet|
+|Monitor|→|Icinga|
+
