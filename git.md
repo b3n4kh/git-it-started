@@ -95,6 +95,16 @@ Note: Working VS Sharing, $name.git
 
 ---
 
+### git status
+
+```bash
+echo -e "\nTest" >> README.md
+git status
+```
+↳ Zeigt aktuellen status
+
+---
+
 ### git add
 
 ```bash
@@ -105,6 +115,10 @@ git add .
 ↳ Fügt `.` in die staging Area
 Note: Es wrid ein temporärer "snapshot" des zustandes erstellt.
 
+----
+
+<!-- .slide: data-background-image="static/git_lc.png" data-background-size="contain" -->
+
 ---
 
 ### git commit
@@ -113,11 +127,15 @@ Note: Es wrid ein temporärer "snapshot" des zustandes erstellt.
 git commit
 ```
 ↳ Persistiert die staging Area
-Note: Die "Geschichte" wird weitergeschrieben, --ammend
+Note: Die "Geschichte" wird weitergeschrieben, --amend
 
 ----
 
 <!-- .slide: data-background-image="static/git3.jpg" data-background-size="contain" -->
+
+----
+
+<!-- .slide: data-background-image="static/git_lc.png" data-background-size="contain" -->
 
 ---
 
@@ -141,16 +159,6 @@ Note: `git log --stat --summary`
 
 ---
 
-### git status
-
-```bash
-echo -e "\nTest" >> README.md
-git status
-```
-↳ Zeigt aktuellen status
-
-----
-
 ### git checkout
 
 ```bash
@@ -158,11 +166,15 @@ git checkout -- README.md
 ```
 ↳ Holt die letzte Version ins working dir.
 
+----
+
+<!-- .slide: data-background-image="static/git_lc.png" data-background-size="contain" -->
+
 ---
 
 ### git branch
 
-```bash
+```aaabash
 git branch devel
 ```
 ↳ Erstellt den branch "devel"  
@@ -217,9 +229,9 @@ Note: Quell branch aus dem erstellt wird
 
 ```bash
 git rebase
-git commit --ammend
+git commit --amend
 ```
-Note: feature branches statt rebase, ammend nur vor push
+Note: feature branches statt rebase, amend nur vor push
 
 ----
 
@@ -233,6 +245,9 @@ git remote add origin ~/git/tutorial.git
 ```
 ↳ Normalerweise ziel auf Server via ssh
 
+----
+
+<!-- .slide: data-background-image="static/git_workflow.png" data-background-size="contain" -->
 
 ----
 
@@ -259,6 +274,9 @@ git pull
 ```
 ↳ Holt änderungen von dem getrackten remote  
 
+----
+
+<!-- .slide: data-background-image="static/git_workflow.png" data-background-size="contain" -->
 
 ---
 
