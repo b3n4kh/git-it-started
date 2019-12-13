@@ -1,4 +1,9 @@
 {
     "controls": true,
-    "progress": true
+    "progress": true,
+    "keyboard": {
+        "13": "next",
+        "32": "next",
+        "39": "next"
+    }
 }

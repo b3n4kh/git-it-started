@@ -19,7 +19,7 @@ https://github.com/b3n4kh/git-it-started
 * Kollaboration
 * GitOps
 
-> A the stupid content tracker
+> Git - the stupid content tracker
 
 ---
 
