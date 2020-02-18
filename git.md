@@ -258,6 +258,10 @@ git push -u origin master
 ↳ Publiziert änderungen an das remote
 Note: Erst jetzt für andere verfügbar, jetzt kein history rewrite mehr
 
+---
+
+<!-- .slide: data-background-image="static/git_push.jpg" data-background-size="contain" -->
+
 ----
 
 ### git clone
