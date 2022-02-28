@@ -4,8 +4,11 @@ A short presentation about git.
 
 ## Run
 
-`reveal-md  git.md -w --css style.css`
+`reveal-md git.md -w --css style.css`
 
+## Build
+
+`reveal-md git.md --css style.css --static _static`
 
 ## Install
 
@@ -14,6 +17,8 @@ A short presentation about git.
 ## license
 
 This Repository is Licensed under the "BEER-WARE LICENSE".
+
+Built with [reveal-md](https://github.com/webpro/reveal-md)
 
 I do not own any rights on the images in static all information and or images are from these sources:
 https://git.github.io/
