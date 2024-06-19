@@ -5,6 +5,6 @@
     "build": "reveal-md git.md --css style.css --static --static-dirs=static"
   },
   "dependencies": {
-    "reveal-md": "^6.1.1"
+    "reveal-md": "^6.1.2"
   }
 }
