@@ -1,405 +1,373 @@
 ---
-title: git it started
+title: Git it Started — English
 ---
 
-# Git
+<!-- .slide: class="cover" -->
 
-© Benjamin Akhras
+# Git it Started
 
-https://git.akhras.at/  
-https://github.com/b3n4kh/git-it-started
+### Git, without the mystery — English edition
 
----
-
-## Was ist Git
-
-----
-
-* Versionsverwaltung
-* Kollaboration
-* GitOps
-
-> Git - the stupid content tracker
+<p class="muted">Use <kbd>→</kbd>, <kbd>Space</kbd>, or a swipe to move through the course.</p>
 
 ---
 
-> Git is a fast, scalable, distributed revision control system with an unusually rich command set that provides both high-level operations and full access to internals.
+## By the end, you can…
 
-----
+<div class="two-columns">
 
-<!-- .slide: data-background-image="static/git_lc.png" data-background-size="contain" -->
+<div>
+
+1. inspect what changed
+2. save deliberate checkpoints
+3. create and merge a feature branch
+
+</div>
+<div>
+
+4. share work safely with a remote
+5. resolve the common “help, Git!” moments
+6. collaborate through a pull request
+
+</div>
+</div>
+
+<p class="callout">The goal is not to memorize every command. It is to build a safe, repeatable loop.</p>
 
 ---
 
-<!-- .slide: data-background-image="static/git1.jpg" data-background-size="contain" -->
-Note: Ziel der Folien
+## The mental model
+
+<div class="flow" aria-label="Git workflow">
+
+<span>Working tree</span><b>→</b><span>Staging area</span><b>→</b><span>Commit history</span><b>→</b><span>Remote</span>
+
+</div>
+
+| Place | Question it answers | Command |
+| --- | --- | --- |
+| Working tree | What have I changed? | `git status`, `git diff` |
+| Staging area | What will my next commit contain? | `git diff --staged` |
+| History | What did we decide before? | `git log` |
+| Remote | What did the team share? | `git fetch`, `git push` |
 
 ---
 
-### Memorize
+## Git is local first
 
-`add, commit, checkout, status, pull and push`
+Git records history in a hidden `.git` directory. You can commit, inspect, and recover work without a network connection.
 
----
-
-### Look up when needed
-
-`clone, init, config, log, diff`
-Note: Nachlesen wenn gebraucht
-
-----
-
-```bash
-man 1 git
-man 7 giteveryday
-man 7 gittutorial
+```text
+project/
+├── README.md        ← your files
+└── .git/            ← Git’s local database
 ```
-Note: Nachlesen wenn gebraucht
+
+<p class="callout">A remote such as GitHub is a shared copy of the repository—not Git itself.</p>
 
 ---
 
-# Tutorial
-Note: Bash öffnen / git installiern
+## One-time setup
 
----
-
-### git config
+Set an identity for the commits you create. Use your own name and a verified email address.
 
 ```bash
-git config --global user.name  "Benjamin Akhras"
-git config --global user.email "b@akhras.at"
+git config --global user.name "Ada Lovelace"
+git config --global user.email "ada@example.com"
+
+# Helpful defaults for new repositories
+git config --global init.defaultBranch main
+git config --global pull.ff only
 ```
-Note: Auf jeder Maschine 1x global
+
+<p class="muted">Check a setting with <code>git config --global --get user.name</code>.</p>
 
 ---
 
-### git init
+## Start or copy a repository
+
+<div class="two-columns">
+
+<div>
+
+### New project
 
 ```bash
-mkdir -p ~/git
-git init ~/git/tutorial
+mkdir recipe-book
+cd recipe-book
+git init
 ```
-↳ erzeugt `.git` verzeichnis
-Note: Siehe in VSCode
 
-----
+</div>
+<div>
 
-### git init --bare
+### Existing project
 
 ```bash
-git init --bare ~/git/tutorial.git
+git clone git@github.com:ORG/PROJECT.git
+cd PROJECT
 ```
-↳ Kein `.git` verzeichnis  
-↳ Hilft bei Kollaboration
-Note: Working VS Sharing, $name.git
+
+</div>
+</div>
+
+<p class="callout">Most day-to-day work starts with <code>git clone</code>, not <code>git init</code>.</p>
 
 ---
 
-### git status
+<!-- .slide: class="section" -->
+
+# The everyday loop
+
+### status → diff → add → review → commit
+
+---
+
+## 1. Ask Git what it sees
 
 ```bash
-echo -e "\nTest" >> README.md
 git status
 ```
-↳ Zeigt aktuellen status
+
+Read it before every commit. It tells you the current branch, changed files, staged files, and the next sensible action.
+
+```bash
+git diff                 # unstaged changes
+git diff --staged        # changes selected for the next commit
+```
+
+<p class="callout">Never commit blind: review the exact patch that will be saved.</p>
 
 ---
 
-### git add
+## 2. Stage deliberately
 
 ```bash
-cd ~/git/tutorial
-echo "# Git Tutorial" > README.md
-git add .
+# Stage a whole file
+git add README.md
+
+# Or select individual hunks interactively
+git add --patch
 ```
-↳ Fügt `.` in die staging Area
-Note: Es wrid ein temporärer "snapshot" des zustandes erstellt.
 
-----
+The staging area lets one commit contain one idea—even when your working tree contains several experiments.
 
-<!-- .slide: data-background-image="static/git_lc.png" data-background-size="contain" -->
+```bash
+git restore --staged README.md  # unstage; keep your edits
+```
 
 ---
 
-### git commit
+## 3. Commit an intention
 
 ```bash
-git commit
+git commit -m "Add vegetarian recipe section"
 ```
-↳ Persistiert die staging Area
-Note: Die "Geschichte" wird weitergeschrieben, --amend
 
-----
+A good commit is small, coherent, and describes why the change exists. Write the subject as an imperative action:
 
-<!-- .slide: data-background-image="static/git3.jpg" data-background-size="contain" -->
+<div class="two-columns compact">
 
-----
+<div class="good">✓ Add input validation<br>✓ Document local setup<br>✓ Fix empty-state layout</div>
+<div class="bad">✗ Changes<br>✗ WIP<br>✗ Fix stuff</div>
 
-<!-- .slide: data-background-image="static/git_lc.png" data-background-size="contain" -->
+</div>
 
 ---
 
-### git diff
+## Practice: make your first checkpoint
 
 ```bash
-git diff [--cached]
+mkdir -p ~/git-playground && cd ~/git-playground
+git init
+echo "# My Git playground" > README.md
+
+git status
+git add README.md
+git diff --staged
+git commit -m "Add project readme"
+git log --oneline
 ```
-↳ Zeigt die Änderungen seit commit
-Note: Wenn schon gestagted dann mit --cached
 
-----
-
-### git log
-
-```bash
-git log
-```
-↳ Zeigt die "history" des Repository
-Note: `git log --stat --summary`
+<p class="callout">Pause here. Can you explain where the README lives at every step?</p>
 
 ---
 
-### git checkout
+## Read history like a story
 
 ```bash
-git checkout -- README.md
+git log --oneline --graph --decorate --all
+git show HEAD
+git show HEAD~1
 ```
-↳ Holt die letzte Version ins working dir.
 
-----
+`HEAD` means “the commit currently checked out.” Commits are immutable snapshots linked to their parent.
 
-<!-- .slide: data-background-image="static/git_lc.png" data-background-size="contain" -->
+```text
+o──o──o  main
+      ↑
+     HEAD
+```
 
 ---
 
-### git branch
+<!-- .slide: class="section" -->
 
-```aaabash
-git branch devel
-```
-↳ Erstellt den branch "devel"  
-Note: Wie in allen VCS, feature-branches, 
-
-----
-
-```bash
-git branch
-```
-↳  __lokale__ zeiger auf den aktuellen branch
-Note: * zeigt auf HEAD
-
-----
-
-<!-- .slide: data-background-image="static/checkout-master.png" data-background-size="contain" -->
+# Branches make change safe
 
 ---
 
-### git checkout
+## A branch is just a movable name
+
+```text
+o──o──o  main
+     \
+      o──o  feature/search
+```
+
+Create a branch before changing shared code:
 
 ```bash
-git checkout devel
+git switch -c feature/search
+# make and commit your changes
+git switch main
 ```
-↳ Wechselt in den branch "devel"  
 
-----
-
-```bash
-git checkout -b devel master
-```
-↳ Erstellt und wechselt in den branch "devel"  
-Note: Quell branch aus dem erstellt wird
-
-----
-
-<!-- .slide: data-background-image="static/git_lc.png" data-background-size="contain" -->
+<p class="callout">Branches are cheap. Use them to isolate work, not to create ceremony.</p>
 
 ---
 
-### recap
-
-| Command  | Action                  |
-|----------|--------------------------|
-| add      | Neue Datein aufnehmen    |
-| commit   | Staging persistieren     |
-| checkout | Update working dir       |
-
-----
-
-<span style="color:red">⚠ History umschreiben ist gefährlich ⚠</span>
+## Merge a completed feature
 
 ```bash
-git rebase
+git switch main
+git pull --ff-only
+git merge --no-ff feature/search
+git branch --delete feature/search
+```
+
+In a team, a pull request usually performs the merge after review and CI pass.
+
+<p class="muted">Use <code>git switch</code> for branches and <code>git restore</code> for files. They make intent clearer than the overloaded legacy <code>git checkout</code>.</p>
+
+---
+
+## Collaborate through a pull request
+
+```bash
+git switch -c feature/search
+# edit, test, commit
+git push --set-upstream origin feature/search
+```
+
+Then open a pull request:
+
+1. explain the problem and the approach
+2. link tests, screenshots, or relevant issues
+3. respond to review
+4. let CI pass before merging
+
+<p class="callout">The pull request is a conversation around a change—not merely a button before merge.</p>
+
+---
+
+## Sync without surprises
+
+```bash
+git fetch origin                          # download remote knowledge
+git log --oneline HEAD..origin/main       # inspect what is new
+git pull --ff-only                        # update only when no merge is needed
+git push                                  # share your commits
+```
+
+Avoid using `git pull` as a reflex. First know which branch you are on and whether you have uncommitted work.
+
+---
+
+<!-- .slide: class="section" -->
+
+# Recovery: slow down, inspect, choose
+
+---
+
+## “I changed the wrong file”
+
+```bash
+git diff
+git restore path/to/file        # discard unstaged edits to one file
+```
+
+Only run `restore` after reading the diff. If the work may matter, preserve it first:
+
+```bash
+git stash push -m "WIP: investigate checkout flow"
+git stash list
+git stash pop
+```
+
+<p class="callout">Git is good at recovery. It cannot recover a change you intentionally discard unless it was committed or stashed.</p>
+
+---
+
+## “My last commit needs fixing”
+
+```bash
+# Not shared yet: edit, stage, then amend
 git commit --amend
-```
-Note: feature branches statt rebase, amend nur vor push
 
-----
-
-<!-- .slide: data-background-image="static/git_history.jpg" data-background-size="contain" -->
-
----
-
-### git remote
-```bash
-git remote add origin ~/git/tutorial.git
-```
-↳ Normalerweise ziel auf Server via ssh
-
-----
-
-<!-- .slide: data-background-image="static/git_workflow.png" data-background-size="contain" -->
-
-----
-
-### git push
-```bash
-git push -u origin master
-```
-↳ Publiziert änderungen an das remote
-Note: Erst jetzt für andere verfügbar, jetzt kein history rewrite mehr
-
----
-
-<!-- .slide: data-background-image="static/git_push.jpg" data-background-size="contain" -->
-
-----
-
-### git clone
-```bash
-git clone ~/git/tutorial.git ~/git/tutorial-clon
-```
-↳ Erstellt lokale Kopie
-
-----
-
-### git pull
-```bash
-git pull
-```
-↳ Holt änderungen von dem getrackten remote  
-
-----
-
-<!-- .slide: data-background-image="static/git_workflow.png" data-background-size="contain" -->
-
----
-
-### Playground
-
-```bash
-cd ~/git/tutorial
-git remote add origin ~/git/tutorial.git
-echo -e "\nMit Remote" >> README.md
-git commit -am "added remote"
-git push -u origin master
-cd ~/git/tutorial-clon
-git pull
+# Already shared: make a new corrective commit
+git revert <commit>
 ```
 
-### Breaking Stuff
-
-```bash
-git checkout -B devel && echo -e "\nA" >> README.md && git commit -am "A"
-git push -u origin devel
-cd ~/git/tutorial-clon
-git checkout -B devel && echo -e "\nB" >> README.md && git commit -am "B"
-git push -u origin devel
-git pull
-```
-
----
-
-### Feature Branches
-
-```bash
-git checkout -B featureA master
-git merge --squash devel
-```
-↳ Kein History rewrite in devel sondern neuer Branch
-Note: Richtiges Feature abgrenzen ist schwierig
-
-----
-
-### Always Branch away from master
-
-This avoids conflicts, and is easier and clearer to review and merge.
-
-----
-
-<!-- .slide: data-background-image="static/merge.png" data-background-size="contain" -->
-
----
-
-### Test 
-
-Code quality can be improved by testing it.  
-Multiple "lines of defense":
-
-0. Lint
-1. Test
-2. Code Review
-3. Continues Integration
-
-----
-
-<!-- .slide: data-background-image="static/test.jpg" data-background-size="contain" -->
-
----
-
-### Important Concepts
-
-<div style="text-align: left;">
-<p><span style="color:red">Problem:</span>
-We never know the state</p>
-<p><span style="color:green">Solution:</span>
-Idempotentcy</p>
+<div class="two-columns compact">
+<div class="good">✓ Amend private work<br>✓ Revert public work</div>
+<div class="bad">✗ Force-push shared branches<br>✗ Rewrite history people depend on</div>
 </div>
 
-----
+---
 
-<div style="text-align: left;">
-<p><span style="color:red">Problem:</span>
-Dependencies change</p>
-<p><span style="color:green">Solution:</span>
-Automate</p>
-</div>
+## “There is a merge conflict”
 
-----
+1. Read the conflicting file and choose the intended result.
+2. Remove the conflict markers: `<<<<<<<`, `=======`, `>>>>>>>`.
+3. Test the result, then stage it.
+4. Continue the operation.
 
-<div style="text-align: left;">
-<p><span style="color:red">Problem:</span>
-Releases are to fast to test</p>
-<p><span style="color:green">Solution:</span>
-Automate</p>
-</div>
+```bash
+git status
+# resolve and test
+git add path/to/resolved-file
+git commit                 # merge
+# or: git rebase --continue
+```
 
-----
-
-<!-- .slide: data-background-image="static/devops.png" data-background-size="contain" -->
+<p class="muted">A conflict is not a Git failure. It is Git asking a human to decide between two valid edits.</p>
 
 ---
 
-### DevOps
+## The five commands worth memorizing
 
-> DevOps is a philosophy, not a method, or framework, or body of knowledge
+| Need | Command |
+| --- | --- |
+| Orient yourself | `git status` |
+| Inspect a change | `git diff` |
+| Save a change | `git add` + `git commit` |
+| Start isolated work | `git switch -c feature/name` |
+| Share it | `git push` |
 
-----
-
-> DevOps is the philosophy of unifying Development and Operations at the culture, practice, and tool levels, to achieve accelerated and more frequent deployment of changes to Production
-
-----
-
-<!-- .slide: data-background-image="static/devops.png" data-background-size="contain" -->
+Everything else is searchable with `git help <command>`.
 
 ---
 
-|Concept|→|Tool|
-|---|---|---|
-|Code|→|Git|
-|Build|→|Gitlab-CI|
-|Test|→|CI|
-|Package|→|RPM|
-|Release|→|Foreman|
-|Configure|→|Puppet|
-|Monitor|→|Icinga|
+<!-- .slide: class="cover" -->
 
+# Your next 15 minutes
+
+1. Create a repository and make two focused commits.
+2. Create a `feature/readme` branch and change one thing.
+3. Push it to GitHub and open a pull request.
+4. Review the final patch before merging.
+
+<p class="callout">Build the habit: <strong>status → diff → add → review → commit</strong>.</p>
+
+<p class="muted">Course source and updates: <a href="https://github.com/b3n4kh/git-it-started">github.com/b3n4kh/git-it-started</a></p>

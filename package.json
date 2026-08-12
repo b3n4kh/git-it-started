@@ -1,10 +1,17 @@
 {
   "name": "git-it-started",
   "private": true,
+  "version": "1.0.0",
+  "description": "A hands-on introduction to modern Git workflows.",
   "scripts": {
-    "build": "reveal-md git.md --css style.css --static --static-dirs=static"
+    "start": "reveal-md git.md --css style.css --watch --disable-auto-open",
+    "build": "rm -rf _site && mkdir -p _site && reveal-md git.md --css style.css --static _site/en --static-dirs=static --absolute-url https://b3n4kh.github.io/git-it-started/en/ && reveal-md git_de.md --css style.css --static _site/de --static-dirs=static --absolute-url https://b3n4kh.github.io/git-it-started/de/ && cp index.html landing.css favicon.ico _site/ && touch _site/.nojekyll",
+    "test": "npm run build && test -f _site/index.html && test -f _site/en/index.html && test -f _site/de/index.html && test -f _site/.nojekyll && test -f _site/en/static/git_lc.png && test -f _site/de/static/git_lc.png && node -e \"const fs=require('node:fs'); for (const [file, text] of [['_site/index.html','Git it Started'],['_site/en/index.html','Git it Started'],['_site/de/index.html','Deutsche Ausgabe']]) if (!fs.readFileSync(file,'utf8').includes(text)) process.exit(1)\""
+  },
+  "engines": {
+    "node": ">=20.19.0 <23"
   },
   "dependencies": {
-    "reveal-md": "^6.1.2"
+    "reveal-md": "6.1.4"
   }
 }

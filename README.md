@@ -1,27 +1,39 @@
-# Getting Started with Git
+# Git, without the mystery
 
-A short presentation about git.
+A hands-on, beginner-friendly course for learning a modern Git workflow: inspect changes, create deliberate commits, work in branches, collaborate through pull requests, and recover safely. It is available in English and German.
 
-## Run
+The published course is available at [b3n4kh.github.io/git-it-started](https://b3n4kh.github.io/git-it-started/): [English](https://b3n4kh.github.io/git-it-started/en/) and [Deutsch](https://b3n4kh.github.io/git-it-started/de/).
 
-`reveal-md git.md -w --css style.css`
+## What learners practice
 
-## Build
+- The everyday loop: `status → diff → add → review → commit`
+- Feature branches and pull requests
+- Safe syncing with `fetch`, `pull --ff-only`, and `push`
+- Recovery with `restore`, `stash`, `amend`, and `revert`
 
-`reveal-md git.md --css style.css --static _static`
+## Run locally
 
-## Install
+This project uses Node.js 20.19–22 and npm.
 
-`npm install`
+```bash
+npm ci
+npm start
+```
 
-## license
+Open the local URL printed by reveal-md. It serves the English deck; the build exports both languages. Press <kbd>Space</kbd> or <kbd>→</kbd> to advance.
 
-This Repository is Licensed under the "BEER-WARE LICENSE".
+## Build and verify
 
-Built with [reveal-md](https://github.com/webpro/reveal-md)
+```bash
+npm test
+```
 
-I do not own any rights on the images in static all information and or images are from these sources:
-https://git.github.io/
-https://git-scm.com/
-The memes are from [pinterest](https://www.pinterest.at/)
+This exports a language-selection page and both decks to `_site/`, then checks their HTML and course assets.
 
+## Deploy
+
+Pushing to `master` runs the GitHub Actions workflow. Pull requests build and smoke-test the course; only pushes to `master` upload and deploy the Pages artifact. In the repository’s **Settings → Pages**, choose **GitHub Actions** as the publishing source once. The deployment URL is recorded in the workflow’s `github-pages` environment.
+
+## License and attribution
+
+This repository is licensed under the BEER-WARE LICENSE. Existing images in `static/` retain their original attribution; see the source history for their provenance.
