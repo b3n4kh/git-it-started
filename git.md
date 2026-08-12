@@ -1,108 +1,88 @@
 ---
-title: Git it Started — English
+title: Git it Started
 ---
 
 <!-- .slide: class="cover" -->
 
 # Git it Started
 
-### Git, without the mystery — English edition
+### A practical introduction to Git
 
-<p class="muted">Use <kbd>→</kbd>, <kbd>Space</kbd>, or a swipe to move through the course.</p>
-
----
-
-## By the end, you can…
-
-<div class="two-columns">
-
-<div>
-
-1. inspect what changed
-2. save deliberate checkpoints
-3. create and merge a feature branch
-
-</div>
-<div>
-
-4. share work safely with a remote
-5. resolve the common “help, Git!” moments
-6. collaborate through a pull request
-
-</div>
-</div>
-
-<p class="callout">The goal is not to memorize every command. It is to build a safe, repeatable loop.</p>
+<p class="muted">© Benjamin Akhras · <a href="https://github.com/b3n4kh/git-it-started">github.com/b3n4kh/git-it-started</a></p>
 
 ---
 
-## The mental model
+## What Git is for
+
+- Keeping a history of a project
+- Comparing versions
+- Working on the same code with other people
+
+> Git is a distributed version control system.
+
+---
+
+## The parts that matter
 
 <div class="flow" aria-label="Git workflow">
-
-<span>Working tree</span><b>→</b><span>Staging area</span><b>→</b><span>Commit history</span><b>→</b><span>Remote</span>
-
+<span>Working directory</span><b>→</b><span>Index</span><b>→</b><span>Repository</span><b>→</b><span>Remote</span>
 </div>
 
-| Place | Question it answers | Command |
+| Where | What it holds | Useful command |
 | --- | --- | --- |
-| Working tree | What have I changed? | `git status`, `git diff` |
-| Staging area | What will my next commit contain? | `git diff --staged` |
-| History | What did we decide before? | `git log` |
-| Remote | What did the team share? | `git fetch`, `git push` |
+| Working directory | Files you are editing | `git status`, `git diff` |
+| Index | The next commit | `git add`, `git diff --staged` |
+| Repository | Local history | `git log`, `git show` |
+| Remote | A shared copy | `git fetch`, `git push` |
 
 ---
 
-## Git is local first
+## Git is local
 
-Git records history in a hidden `.git` directory. You can commit, inspect, and recover work without a network connection.
+Git keeps the history in `.git` inside the project directory.
 
 ```text
 project/
-├── README.md        ← your files
-└── .git/            ← Git’s local database
+├── README.md       ← project files
+└── .git/           ← local Git repository
 ```
 
-<p class="callout">A remote such as GitHub is a shared copy of the repository—not Git itself.</p>
+GitHub, GitLab, and a bare repository on a server are remotes. They are useful, but you do not need one to make a commit.
 
 ---
 
-## One-time setup
-
-Set an identity for the commits you create. Use your own name and a verified email address.
+## Set your identity once
 
 ```bash
-git config --global user.name "Ada Lovelace"
-git config --global user.email "ada@example.com"
-
-# Helpful defaults for new repositories
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
 git config --global init.defaultBranch main
-git config --global pull.ff only
 ```
 
-<p class="muted">Check a setting with <code>git config --global --get user.name</code>.</p>
+Git writes this name and email into every commit you create.
+
+```bash
+git config --global --list
+```
 
 ---
 
-## Start or copy a repository
+## Get a repository
 
 <div class="two-columns">
-
 <div>
 
-### New project
-
+### Start a new project
 ```bash
-mkdir recipe-book
-cd recipe-book
+mkdir notes
+cd notes
 git init
 ```
 
 </div>
 <div>
 
-### Existing project
-
+### Get an existing project
 ```bash
 git clone git@github.com:ORG/PROJECT.git
 cd PROJECT
@@ -111,89 +91,92 @@ cd PROJECT
 </div>
 </div>
 
-<p class="callout">Most day-to-day work starts with <code>git clone</code>, not <code>git init</code>.</p>
+For a project that already exists on GitHub, use `clone`.
 
 ---
 
 <!-- .slide: class="section" -->
 
-# The everyday loop
+# Day-to-day work
 
-### status → diff → add → review → commit
+### status → diff → add → commit
 
 ---
 
-## 1. Ask Git what it sees
+## Start with `status`
 
 ```bash
 git status
 ```
 
-Read it before every commit. It tells you the current branch, changed files, staged files, and the next sensible action.
+It shows the current branch, files that changed, files already staged, and whether the local branch is ahead of or behind its remote.
 
-```bash
-git diff                 # unstaged changes
-git diff --staged        # changes selected for the next commit
-```
-
-<p class="callout">Never commit blind: review the exact patch that will be saved.</p>
+Run it often. It is the quickest way to find out where you are.
 
 ---
 
-## 2. Stage deliberately
+## Look at the change
 
 ```bash
-# Stage a whole file
+git diff            # changes not staged yet
+git diff --staged   # changes in the next commit
+```
+
+`git diff` shows lines, not just filenames. Read it before committing.
+
+If it is not clear what a diff does, do not add it yet.
+
+---
+
+## Add what belongs together
+
+```bash
 git add README.md
-
-# Or select individual hunks interactively
-git add --patch
 ```
 
-The staging area lets one commit contain one idea—even when your working tree contains several experiments.
+`git add` puts the current version of a file into the index. The commit will contain the index, not everything in the working directory.
 
 ```bash
-git restore --staged README.md  # unstage; keep your edits
+git add --patch                 # choose individual changes
+git restore --staged README.md  # remove a file from the index
 ```
 
 ---
 
-## 3. Commit an intention
+## Make a commit
 
 ```bash
-git commit -m "Add vegetarian recipe section"
+git commit -m "Document local setup"
 ```
 
-A good commit is small, coherent, and describes why the change exists. Write the subject as an imperative action:
+A commit should describe one change that can stand on its own.
 
 <div class="two-columns compact">
-
-<div class="good">✓ Add input validation<br>✓ Document local setup<br>✓ Fix empty-state layout</div>
+<div class="good">✓ Add search validation<br>✓ Fix empty result state<br>✓ Update installation notes</div>
 <div class="bad">✗ Changes<br>✗ WIP<br>✗ Fix stuff</div>
-
 </div>
 
 ---
 
-## Practice: make your first checkpoint
+## Try the complete loop
 
 ```bash
 mkdir -p ~/git-playground && cd ~/git-playground
 git init
-echo "# My Git playground" > README.md
+echo "# Git playground" > README.md
 
 git status
 git add README.md
 git diff --staged
-git commit -m "Add project readme"
+git commit -m "Add readme"
 git log --oneline
 ```
 
-<p class="callout">Pause here. Can you explain where the README lives at every step?</p>
+The same loop applies to one file or one hundred files.
 
 ---
 
-## Read history like a story
+## Read the history
 
 ```bash
 git log --oneline --graph --decorate --all
@@ -201,7 +184,7 @@ git show HEAD
 git show HEAD~1
 ```
 
-`HEAD` means “the commit currently checked out.” Commits are immutable snapshots linked to their parent.
+`HEAD` points at the commit currently checked out.
 
 ```text
 o──o──o  main
@@ -213,11 +196,11 @@ o──o──o  main
 
 <!-- .slide: class="section" -->
 
-# Branches make change safe
+# Branches
 
 ---
 
-## A branch is just a movable name
+## Work on a branch
 
 ```text
 o──o──o  main
@@ -225,19 +208,17 @@ o──o──o  main
       o──o  feature/search
 ```
 
-Create a branch before changing shared code:
-
 ```bash
 git switch -c feature/search
-# make and commit your changes
+# edit, test, commit
 git switch main
 ```
 
-<p class="callout">Branches are cheap. Use them to isolate work, not to create ceremony.</p>
+A branch is a name pointing at a commit. Creating one is cheap; use one before changing shared work.
 
 ---
 
-## Merge a completed feature
+## Bring the work back
 
 ```bash
 git switch main
@@ -246,13 +227,13 @@ git merge --no-ff feature/search
 git branch --delete feature/search
 ```
 
-In a team, a pull request usually performs the merge after review and CI pass.
+On a team, this normally happens through a pull request after review and CI.
 
-<p class="muted">Use <code>git switch</code> for branches and <code>git restore</code> for files. They make intent clearer than the overloaded legacy <code>git checkout</code>.</p>
+`git switch` is for branches. `git restore` is for files. The older `git checkout` does both, which is why newer commands are easier to read.
 
 ---
 
-## Collaborate through a pull request
+## Send a branch for review
 
 ```bash
 git switch -c feature/search
@@ -260,114 +241,124 @@ git switch -c feature/search
 git push --set-upstream origin feature/search
 ```
 
-Then open a pull request:
+The pull request should answer three things:
 
-1. explain the problem and the approach
-2. link tests, screenshots, or relevant issues
-3. respond to review
-4. let CI pass before merging
-
-<p class="callout">The pull request is a conversation around a change—not merely a button before merge.</p>
-
----
-
-## Sync without surprises
-
-```bash
-git fetch origin                          # download remote knowledge
-git log --oneline HEAD..origin/main       # inspect what is new
-git pull --ff-only                        # update only when no merge is needed
-git push                                  # share your commits
-```
-
-Avoid using `git pull` as a reflex. First know which branch you are on and whether you have uncommitted work.
+1. What changed?
+2. Why was it needed?
+3. How was it checked?
 
 ---
 
 <!-- .slide: class="section" -->
 
-# Recovery: slow down, inspect, choose
+# Working with a remote
 
 ---
 
-## “I changed the wrong file”
+## Fetch before you pull
+
+```bash
+git fetch origin
+git log --oneline HEAD..origin/main
+git pull --ff-only
+git push
+```
+
+`fetch` updates your view of the remote without touching your files. Look first, then decide whether to merge, rebase, or pull.
+
+`--ff-only` refuses to create an unexpected merge commit.
+
+---
+
+## A small team workflow
+
+```text
+main ────●────────────●────
+          \          /
+feature ───●──●──●──●
+```
+
+1. Create a branch from current `main`.
+2. Make small, reviewable commits.
+3. Push the branch and open a pull request.
+4. Review, test, merge.
+
+---
+
+<!-- .slide: class="section" -->
+
+# When something goes wrong
+
+---
+
+## Changed the wrong file?
 
 ```bash
 git diff
-git restore path/to/file        # discard unstaged edits to one file
+git restore path/to/file
 ```
 
-Only run `restore` after reading the diff. If the work may matter, preserve it first:
+`restore` discards unstaged changes. Read the diff first.
+
+If you want to put work aside without committing it:
 
 ```bash
-git stash push -m "WIP: investigate checkout flow"
+git stash push -m "WIP: checkout investigation"
 git stash list
 git stash pop
 ```
 
-<p class="callout">Git is good at recovery. It cannot recover a change you intentionally discard unless it was committed or stashed.</p>
-
 ---
 
-## “My last commit needs fixing”
+## Need to fix a commit?
 
 ```bash
-# Not shared yet: edit, stage, then amend
+# The commit is local and not shared yet
 git commit --amend
 
-# Already shared: make a new corrective commit
+# The commit is already shared
 git revert <commit>
 ```
 
-<div class="two-columns compact">
-<div class="good">✓ Amend private work<br>✓ Revert public work</div>
-<div class="bad">✗ Force-push shared branches<br>✗ Rewrite history people depend on</div>
-</div>
+Amend changes history. Revert adds a new commit that undoes an older one. Do not rewrite a branch other people are using.
 
 ---
 
-## “There is a merge conflict”
-
-1. Read the conflicting file and choose the intended result.
-2. Remove the conflict markers: `<<<<<<<`, `=======`, `>>>>>>>`.
-3. Test the result, then stage it.
-4. Continue the operation.
+## Merge conflict
 
 ```bash
 git status
-# resolve and test
-git add path/to/resolved-file
-git commit                 # merge
-# or: git rebase --continue
+# resolve the file and test it
+git add path/to/file
+git commit
 ```
 
-<p class="muted">A conflict is not a Git failure. It is Git asking a human to decide between two valid edits.</p>
+Git marks the conflicting sections with `<<<<<<<`, `=======`, and `>>>>>>>`.
+
+The hard part is deciding what the file should say. Git only stops and asks you to make that decision.
 
 ---
 
-## The five commands worth memorizing
+## Keep these close
 
-| Need | Command |
+| Task | Command |
 | --- | --- |
-| Orient yourself | `git status` |
-| Inspect a change | `git diff` |
-| Save a change | `git add` + `git commit` |
-| Start isolated work | `git switch -c feature/name` |
-| Share it | `git push` |
+| Find out what is going on | `git status` |
+| See the actual change | `git diff` |
+| Save work | `git add` + `git commit` |
+| Start a branch | `git switch -c name` |
+| Share commits | `git push` |
 
-Everything else is searchable with `git help <command>`.
+The rest is in `git help <command>`.
 
 ---
 
 <!-- .slide: class="cover" -->
 
-# Your next 15 minutes
+# Next step
 
-1. Create a repository and make two focused commits.
-2. Create a `feature/readme` branch and change one thing.
-3. Push it to GitHub and open a pull request.
-4. Review the final patch before merging.
+Create a small repository. Make two commits. Create a branch. Push it. Open a pull request.
 
-<p class="callout">Build the habit: <strong>status → diff → add → review → commit</strong>.</p>
+<p class="callout"><strong>status → diff → add → commit</strong></p>
 
-<p class="muted">Course source and updates: <a href="https://github.com/b3n4kh/git-it-started">github.com/b3n4kh/git-it-started</a></p>
+<p class="muted"><a href="https://github.com/b3n4kh/git-it-started">github.com/b3n4kh/git-it-started</a></p>

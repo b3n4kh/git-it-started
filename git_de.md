@@ -1,102 +1,88 @@
 ---
-title: Git it Started — Deutsch
+title: Git it Started
 ---
 
 <!-- .slide: class="cover" -->
 
 # Git it Started
 
-### Git ohne Rätsel — Deutsche Ausgabe
+### Ein kompakter Einstieg in Git
 
-<p class="muted">Mit <kbd>→</kbd>, <kbd>Leertaste</kbd> oder Wischen durch den Kurs navigieren.</p>
-
----
-
-## Nach diesem Kurs kannst du…
-
-<div class="two-columns">
-<div>
-
-1. Änderungen prüfen
-2. bewusste Zwischenstände sichern
-3. einen Feature-Branch erstellen und zusammenführen
-
-</div>
-<div>
-
-4. Arbeit sicher mit einem Remote teilen
-5. häufige „Hilfe, Git!“-Momente lösen
-6. über Pull Requests zusammenarbeiten
-
-</div>
-</div>
-
-<p class="callout">Nicht jeden Befehl auswendig lernen: Einen sicheren, wiederholbaren Ablauf aufbauen.</p>
+<p class="muted">© Benjamin Akhras · <a href="https://github.com/b3n4kh/git-it-started">github.com/b3n4kh/git-it-started</a></p>
 
 ---
 
-## Das mentale Modell
+## Wofür Git da ist
+
+- Änderungen nachvollziehen
+- Alte Stände vergleichen und wiederherstellen
+- Gemeinsam an einem Projekt arbeiten
+
+> Git ist eine verteilte Versionsverwaltung.
+
+---
+
+## Die vier Bereiche
 
 <div class="flow" aria-label="Git-Ablauf">
-<span>Arbeitsverzeichnis</span><b>→</b><span>Staging Area</span><b>→</b><span>Commit-Historie</span><b>→</b><span>Remote</span>
+<span>Arbeitsverzeichnis</span><b>→</b><span>Index</span><b>→</b><span>Repository</span><b>→</b><span>Remote</span>
 </div>
 
-| Ort | Welche Frage beantwortet er? | Befehl |
+| Bereich | Inhalt | Nützliche Befehle |
 | --- | --- | --- |
-| Arbeitsverzeichnis | Was habe ich geändert? | `git status`, `git diff` |
-| Staging Area | Was enthält der nächste Commit? | `git diff --staged` |
-| Historie | Was haben wir vorher entschieden? | `git log` |
-| Remote | Was hat das Team geteilt? | `git fetch`, `git push` |
+| Arbeitsverzeichnis | Dateien, an denen du arbeitest | `git status`, `git diff` |
+| Index | Inhalt des nächsten Commits | `git add`, `git diff --staged` |
+| Repository | Lokale Historie | `git log`, `git show` |
+| Remote | Gemeinsame Kopie | `git fetch`, `git push` |
 
 ---
 
-## Git ist zuerst lokal
+## Git arbeitet lokal
 
-Git speichert die Historie im versteckten Verzeichnis `.git`. Du kannst committen, prüfen und Arbeit wiederherstellen – auch ohne Netzwerk.
+Die Historie liegt im Verzeichnis `.git` direkt im Projekt.
 
 ```text
 projekt/
-├── README.md        ← deine Dateien
-└── .git/            ← Gits lokale Datenbank
+├── README.md       ← Projektdateien
+└── .git/           ← lokales Git-Repository
 ```
 
-<p class="callout">Ein Remote wie GitHub ist eine gemeinsame Kopie des Repositories – nicht Git selbst.</p>
+GitHub, GitLab oder ein Bare Repository auf einem Server sind Remotes. Praktisch für die Zusammenarbeit, aber für einen Commit nicht nötig.
 
 ---
 
-## Einmalige Einrichtung
-
-Lege eine Identität für deine Commits fest. Verwende deinen Namen und eine verifizierte E-Mail-Adresse.
+## Name und E-Mail hinterlegen
 
 ```bash
-git config --global user.name "Ada Lovelace"
-git config --global user.email "ada@example.com"
-
-# Sinnvolle Standards für neue Repositories
+git config --global user.name "Dein Name"
+git config --global user.email "du@example.com"
 git config --global init.defaultBranch main
-git config --global pull.ff only
 ```
 
-<p class="muted">Einstellung prüfen: <code>git config --global --get user.name</code>.</p>
+Git trägt diese Angaben in jeden Commit ein.
+
+```bash
+git config --global --list
+```
 
 ---
 
-## Repository anlegen oder kopieren
+## Ein Repository bekommen
 
 <div class="two-columns">
 <div>
 
 ### Neues Projekt
 ```bash
-mkdir recipe-book
-cd recipe-book
+mkdir notizen
+cd notizen
 git init
 ```
 
 </div>
 <div>
 
-### Bestehendes Projekt
+### Vorhandenes Projekt
 ```bash
 git clone git@github.com:ORG/PROJEKT.git
 cd PROJEKT
@@ -105,87 +91,92 @@ cd PROJEKT
 </div>
 </div>
 
-<p class="callout">Die tägliche Arbeit beginnt meist mit <code>git clone</code>, nicht mit <code>git init</code>.</p>
+Ein Projekt, das schon auf GitHub liegt, klonst du mit `git clone`.
 
 ---
 
 <!-- .slide: class="section" -->
 
-# Der tägliche Ablauf
+# Die tägliche Arbeit
 
-### status → diff → add → prüfen → commit
+### status → diff → add → commit
 
 ---
 
-## 1. Git nach dem Zustand fragen
+## Erst einmal: `status`
 
 ```bash
 git status
 ```
 
-Lies die Ausgabe vor jedem Commit. Sie zeigt den aktuellen Branch, veränderte und vorgemerkte Dateien sowie den nächsten sinnvollen Schritt.
+Zeigt den aktuellen Branch, geänderte Dateien, vorgemerkte Dateien und den Stand zum Remote.
 
-```bash
-git diff                 # nicht vorgemerkte Änderungen
-git diff --staged        # Auswahl für den nächsten Commit
-```
-
-<p class="callout">Nie blind committen: Den exakten Patch vorher ansehen.</p>
+`git status` ist der Befehl, den du am häufigsten brauchst. Wenn etwas unklar ist: zuerst `status`.
 
 ---
 
-## 2. Bewusst vormerken
+## Änderungen ansehen
 
 ```bash
-# Eine ganze Datei vormerken
+git diff            # noch nicht vorgemerkte Änderungen
+git diff --staged   # Inhalt des nächsten Commits
+```
+
+`git diff` zeigt Zeilen, nicht nur Dateinamen. Vor dem Commit anschauen.
+
+Wenn der Diff nicht klar ist, gehört die Änderung noch nicht in den Commit.
+
+---
+
+## Zusammengehöriges vormerken
+
+```bash
 git add README.md
-
-# Oder einzelne Änderungsblöcke auswählen
-git add --patch
 ```
 
-Die Staging Area hält einen Commit bei einer Idee – auch wenn im Arbeitsverzeichnis mehrere Experimente liegen.
+`git add` schreibt den aktuellen Stand einer Datei in den Index. Der Commit enthält den Index, nicht automatisch alles im Arbeitsverzeichnis.
 
 ```bash
-git restore --staged README.md  # Vormerkung entfernen, Änderungen behalten
+git add --patch                 # einzelne Änderungen auswählen
+git restore --staged README.md  # aus dem Index nehmen
 ```
 
 ---
 
-## 3. Eine Absicht committen
+## Commit erstellen
 
 ```bash
-git commit -m "Add vegetarian recipe section"
+git commit -m "Lokales Setup dokumentieren"
 ```
 
-Ein guter Commit ist klein, zusammenhängend und erklärt, warum die Änderung existiert. Schreibe die Betreffzeile als Handlung:
+Ein Commit sollte eine nachvollziehbare Änderung enthalten.
 
 <div class="two-columns compact">
-<div class="good">✓ Eingaben validieren<br>✓ Lokales Setup dokumentieren<br>✓ Leeren Zustand korrigieren</div>
-<div class="bad">✗ Änderungen<br>✗ WIP<br>✗ Dinge repariert</div>
+<div class="good">✓ Eingabe prüfen<br>✓ Leere Trefferliste korrigieren<br>✓ Installationshinweise ergänzen</div>
+<div class="bad">✗ Änderungen<br>✗ WIP<br>✗ Kram gefixt</div>
 </div>
 
 ---
 
-## Übung: erster Zwischenstand
+## Einmal komplett durchspielen
 
 ```bash
-mkdir -p ~/git-playground && cd ~/git-playground
+mkdir -p ~/git-spielplatz && cd ~/git-spielplatz
 git init
-echo "# Mein Git-Spielplatz" > README.md
+echo "# Git-Spielplatz" > README.md
 
 git status
 git add README.md
 git diff --staged
-git commit -m "Add project readme"
+git commit -m "Readme anlegen"
 git log --oneline
 ```
 
-<p class="callout">Kurz anhalten: Kannst du erklären, wo die README nach jedem Schritt liegt?</p>
+Der Ablauf bleibt derselbe, egal ob eine Datei oder hundert geändert wurden.
 
 ---
 
-## Historie als Geschichte lesen
+## In die Historie schauen
 
 ```bash
 git log --oneline --graph --decorate --all
@@ -193,7 +184,7 @@ git show HEAD
 git show HEAD~1
 ```
 
-`HEAD` bedeutet: „Der aktuell ausgecheckte Commit“. Commits sind unveränderliche Momentaufnahmen, die auf ihre Vorgänger zeigen.
+`HEAD` zeigt auf den Commit, den du gerade ausgecheckt hast.
 
 ```text
 o──o──o  main
@@ -205,11 +196,11 @@ o──o──o  main
 
 <!-- .slide: class="section" -->
 
-# Branches machen Änderungen sicher
+# Mit Branches arbeiten
 
 ---
 
-## Ein Branch ist nur ein beweglicher Name
+## Für Änderungen einen Branch anlegen
 
 ```text
 o──o──o  main
@@ -217,19 +208,17 @@ o──o──o  main
       o──o  feature/search
 ```
 
-Erstelle einen Branch, bevor du gemeinsamen Code änderst:
-
 ```bash
 git switch -c feature/search
-# Änderungen erstellen und committen
+# bearbeiten, testen, committen
 git switch main
 ```
 
-<p class="callout">Branches sind günstig. Nutze sie, um Arbeit zu isolieren – nicht um Bürokratie zu schaffen.</p>
+Ein Branch ist ein Name, der auf einen Commit zeigt. Einen anzulegen kostet nichts; für Änderungen an gemeinsamem Code lohnt es sich fast immer.
 
 ---
 
-## Ein fertiges Feature zusammenführen
+## Änderungen zurückführen
 
 ```bash
 git switch main
@@ -238,13 +227,13 @@ git merge --no-ff feature/search
 git branch --delete feature/search
 ```
 
-Im Team übernimmt ein Pull Request den Merge meist erst nach Review und erfolgreicher CI.
+Im Team passiert das üblicherweise über einen Pull Request – nach Review und erfolgreicher CI.
 
-<p class="muted"><code>git switch</code> ist für Branches, <code>git restore</code> für Dateien. Das macht die Absicht klarer als das überladene ältere <code>git checkout</code>.</p>
+`git switch` ist zum Branch wechseln, `git restore` für Dateien. Das ältere `git checkout` kann beides und ist deshalb weniger eindeutig.
 
 ---
 
-## Über einen Pull Request zusammenarbeiten
+## Einen Branch zur Prüfung schicken
 
 ```bash
 git switch -c feature/search
@@ -252,114 +241,124 @@ git switch -c feature/search
 git push --set-upstream origin feature/search
 ```
 
-Dann einen Pull Request öffnen:
+Ein Pull Request sollte drei Fragen beantworten:
 
-1. Problem und Ansatz erklären
-2. Tests, Screenshots oder Issues verlinken
-3. Auf Review reagieren
-4. CI vor dem Merge abwarten
-
-<p class="callout">Ein Pull Request ist ein Gespräch über eine Änderung – nicht nur ein Knopf vor dem Merge.</p>
-
----
-
-## Ohne Überraschungen synchronisieren
-
-```bash
-git fetch origin                          # Wissen vom Remote laden
-git log --oneline HEAD..origin/main       # Neues zuerst ansehen
-git pull --ff-only                        # nur ohne automatischen Merge aktualisieren
-git push                                  # eigene Commits teilen
-```
-
-Nutze `git pull` nicht reflexartig. Prüfe zuerst Branch und uncommittete Arbeit.
+1. Was wurde geändert?
+2. Warum ist die Änderung nötig?
+3. Wie wurde sie geprüft?
 
 ---
 
 <!-- .slide: class="section" -->
 
-# Wiederherstellen: langsam werden, prüfen, wählen
+# Mit einem Remote arbeiten
 
 ---
 
-## „Ich habe die falsche Datei geändert“
+## Erst fetchen, dann pullen
+
+```bash
+git fetch origin
+git log --oneline HEAD..origin/main
+git pull --ff-only
+git push
+```
+
+`fetch` holt Informationen vom Remote, ohne deine Dateien anzufassen. Erst ansehen, dann entscheiden: mergen, rebasen oder pullen.
+
+`--ff-only` verhindert einen Merge-Commit, den du nicht erwartet hast.
+
+---
+
+## Ein einfacher Team-Ablauf
+
+```text
+main ────●────────────●────
+          \          /
+feature ───●──●──●──●
+```
+
+1. Branch von aktuellem `main` anlegen.
+2. Kleine, prüfbare Commits machen.
+3. Branch pushen und Pull Request öffnen.
+4. Review, Tests, Merge.
+
+---
+
+<!-- .slide: class="section" -->
+
+# Wenn etwas schiefgeht
+
+---
+
+## Falsche Datei geändert?
 
 ```bash
 git diff
-git restore pfad/zur/datei    # nicht vorgemerkte Änderungen einer Datei verwerfen
+git restore pfad/zur/datei
 ```
 
-`restore` erst nach dem Diff benutzen. Falls die Arbeit wichtig werden könnte, zuerst sichern:
+`restore` verwirft nicht vorgemerkte Änderungen. Deshalb vorher den Diff lesen.
+
+Arbeit kurz weglegen, ohne sie zu committen:
 
 ```bash
-git stash push -m "WIP: Checkout-Ablauf untersuchen"
+git stash push -m "WIP: Checkout untersuchen"
 git stash list
 git stash pop
 ```
 
-<p class="callout">Git kann viel wiederherstellen. Absichtlich verworfene Änderungen nur dann, wenn sie vorher committet oder gestasht wurden.</p>
-
 ---
 
-## „Mein letzter Commit braucht eine Korrektur“
+## Ein Commit muss korrigiert werden?
 
 ```bash
-# Noch nicht geteilt: bearbeiten, vormerken, dann ergänzen
+# Noch nicht geteilt
 git commit --amend
 
-# Bereits geteilt: einen neuen Gegen-Commit erstellen
+# Bereits geteilt
 git revert <commit>
 ```
 
-<div class="two-columns compact">
-<div class="good">✓ Privates ergänzen<br>✓ Öffentliches revertieren</div>
-<div class="bad">✗ Geteilte Branches force-pushen<br>✗ Historie umschreiben, von der andere abhängen</div>
-</div>
+`amend` schreibt Historie um. `revert` erstellt einen neuen Commit, der einen alten rückgängig macht. Geteilte Branches nicht umschreiben.
 
 ---
 
-## „Es gibt einen Merge-Konflikt“
-
-1. Konfliktdatei lesen und das gewünschte Ergebnis wählen.
-2. Konfliktmarker entfernen: `<<<<<<<`, `=======`, `>>>>>>>`.
-3. Ergebnis testen und vormerken.
-4. Vorgang fortsetzen.
+## Merge-Konflikt
 
 ```bash
 git status
-# auflösen und testen
-git add pfad/zur/aufgeloesten-datei
-git commit                 # bei Merge
-# oder: git rebase --continue
+# Datei auflösen und testen
+git add pfad/zur/datei
+git commit
 ```
 
-<p class="muted">Ein Konflikt ist kein Git-Fehler. Git bittet einen Menschen, zwischen zwei gültigen Änderungen zu entscheiden.</p>
+Git markiert die betroffenen Stellen mit `<<<<<<<`, `=======` und `>>>>>>>`.
+
+Der Konflikt liegt im Inhalt, nicht in Git: Entscheide, wie die Datei danach aussehen soll.
 
 ---
 
-## Die fünf Befehle zum Merken
+## Diese Befehle reichen für den Anfang
 
-| Bedarf | Befehl |
+| Aufgabe | Befehl |
 | --- | --- |
 | Orientierung | `git status` |
 | Änderung ansehen | `git diff` |
-| Änderung sichern | `git add` + `git commit` |
-| Isoliert starten | `git switch -c feature/name` |
-| Teilen | `git push` |
+| Arbeit sichern | `git add` + `git commit` |
+| Branch anlegen | `git switch -c name` |
+| Commits teilen | `git push` |
 
-Alles andere ist mit `git help <command>` schnell auffindbar.
+Für den Rest: `git help <command>`.
 
 ---
 
 <!-- .slide: class="cover" -->
 
-# Deine nächsten 15 Minuten
+# Und jetzt
 
-1. Repository erstellen und zwei fokussierte Commits anlegen.
-2. Einen `feature/readme`-Branch erstellen und eine Sache ändern.
-3. Zu GitHub pushen und einen Pull Request öffnen.
-4. Den finalen Patch vor dem Merge prüfen.
+Ein kleines Repository anlegen. Zwei Commits machen. Einen Branch erstellen. Pushen. Pull Request öffnen.
 
-<p class="callout">Die Gewohnheit aufbauen: <strong>status → diff → add → prüfen → commit</strong>.</p>
+<p class="callout"><strong>status → diff → add → commit</strong></p>
 
-<p class="muted">Quellcode und Updates: <a href="https://github.com/b3n4kh/git-it-started">github.com/b3n4kh/git-it-started</a></p>
+<p class="muted"><a href="https://github.com/b3n4kh/git-it-started">github.com/b3n4kh/git-it-started</a></p>

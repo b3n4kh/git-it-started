@@ -1,6 +1,6 @@
-# Git, without the mystery
+# Git it Started
 
-A hands-on, beginner-friendly course for learning a modern Git workflow: inspect changes, create deliberate commits, work in branches, collaborate through pull requests, and recover safely. It is available in English and German.
+A short course covering Git basics: commits, branches, remotes, pull requests, and recovery. It is available in English and German.
 
 The published course is available at [b3n4kh.github.io/git-it-started](https://b3n4kh.github.io/git-it-started/): [English](https://b3n4kh.github.io/git-it-started/en/) and [Deutsch](https://b3n4kh.github.io/git-it-started/de/).
 
